@@ -22,9 +22,8 @@
   },
   "homepage": "https://github.com/504dev/logr-watch#readme",
   "dependencies": {
-    "always-tail": "^0.2.0",
+    "commander": "^5.1.0",
     "logr-node-client": "git+https://github.com/504dev/logr-node-client.git",
-    "tail": "^2.0.4",
-    "watchr": "^6.4.0"
+    "tail": "^2.0.4"
   }
 }
