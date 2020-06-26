@@ -1,4 +1,4 @@
-test.txt
+*.txt
 config.js
 node_modules
 .idea

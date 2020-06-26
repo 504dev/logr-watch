@@ -1,4 +1,4 @@
-const {resolve, basename} = require('path')
+const {basename} = require('path')
 const {Tail} = require('tail')
 
 class Watcher {
@@ -6,13 +6,15 @@ class Watcher {
         this.level = level
         this.handler = handler
         this.path = path
-        this.abspath = resolve(process.cwd(), path)
         this.logname = logname || basename(path)
-        console.log(this.path, this.abspath, this.logname)
         this.logger = logr.newLogger(this.logname)
-        this.tail = new Tail(this.abspath)
+        this.tail = new Tail(this.path)
         this.tail.on('line', this.handleLine.bind(this))
-        this.tail.on('error', console.error)
+        this.tail.on('error', this.handleError.bind(this))
+    }
+
+    handleError(e) {
+        this.logger.error(e)
     }
 
     handleLine(line) {
