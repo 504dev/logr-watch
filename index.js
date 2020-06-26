@@ -1,4 +1,3 @@
-const fs = require('fs')
 const path = require('path')
 const glob = require('glob')
 const util = require('util')
@@ -7,7 +6,7 @@ const {Logr} = require('logr-node-client')
 const {Watcher} = require('./watcher')
 
 let {version} = require('./package')
-let globp = util.promisify(glob)
+const globp = util.promisify(glob)
 
 program
     .option('-c, --config <string>', 'config path', null, false)
@@ -29,19 +28,19 @@ program
             privateKey: "MC0CAQACBQDIOyKzAgMBAAECBQCHaZwRAgMA0nkCAwDziwIDAL+xAgJMKwICGq0=",
         });
 
-        // const watchers = []
+        const watchers = []
         for (let file of config.files) {
             const patterns = [].concat(file.path || [])
+            const paths = []
             for (let pattern of patterns) {
-                const paths = await globp(pattern, {})
-                for (let filepath of paths) {
-                    filepath = path.resolve(process.cwd(), filepath)
-                    // TODO logname func
-                    const watcher = new Watcher({...file, path: filepath}, logr)
-                    // watchers.push(watcher)
-                }
+                paths.push(...await globp(pattern, {}))
             }
-
+            for (let filepath of paths) {
+                const abspath = path.resolve(process.cwd(), filepath)
+                const watcher = new Watcher({...file, path: abspath}, logr)
+                watchers.push(watcher)
+            }
+            // TODO watch patterns
         }
         // console.log(watchers)
     })
