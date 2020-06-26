@@ -18,31 +18,54 @@ program
     .action(() => program.help())
 
 program
+    .command('init')
+    .description('create config file')
+    .action(() => {
+        console.log('not implemented yet')
+    })
+
+program
     .action(async () => {
         const configPath = path.resolve(process.cwd(), program.config || 'config.js')
         const config = require(configPath);
 
         const logr = new Logr({
-            udp: ":7776",
-            publicKey: "MCAwDQYJKoZIhvcNAQEBBQADDwAwDAIFAMg7IrMCAwEAAQ==",
-            privateKey: "MC0CAQACBQDIOyKzAgMBAAECBQCHaZwRAgMA0nkCAwDziwIDAL+xAgJMKwICGq0=",
+            udp: config.udp,
+            publicKey: config.public_key,
+            privateKey: config.private_key,
         });
 
-        const watchers = []
-        for (let file of config.files) {
-            const patterns = [].concat(file.path || [])
-            const paths = []
-            for (let pattern of patterns) {
-                paths.push(...await globp(pattern, {}))
-            }
-            for (let filepath of paths) {
-                const abspath = path.resolve(process.cwd(), filepath)
-                const watcher = new Watcher({...file, path: abspath}, logr)
-                watchers.push(watcher)
-            }
-            // TODO watch patterns
+        while (true) {
+            await watch(config, logr)
+            await sleep(5000)
         }
         // console.log(watchers)
     })
 
 program.parse(process.argv)
+
+const watchers = []
+
+async function watch(config, logr) {
+    for (let i = 0; i < config.files.length; i++) {
+        const file = config.files[i]
+        const patterns = [].concat(file.path || [])
+        const paths = []
+        for (let pattern of patterns) {
+            paths.push(...await globp(pattern, {}))
+        }
+        watchers[i] = watchers[i] || {}
+        for (let filepath of paths) {
+            const abspath = path.resolve(process.cwd(), filepath)
+            if (watchers[i][abspath]) {
+                continue
+            }
+            console.log(abspath)
+            watchers[i][abspath] = new Watcher({...file, path: abspath}, logr)
+        }
+    }
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
