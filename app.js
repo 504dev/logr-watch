@@ -6,7 +6,7 @@ const {Watcher} = require('./watcher')
 
 const globp = util.promisify(glob)
 
-class App {
+class Logrw {
     constructor(config) {
         this.config = config
         this.logr = new Logr({
@@ -50,4 +50,4 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-module.exports = {App}
+module.exports = {Logrw}

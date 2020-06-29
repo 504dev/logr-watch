@@ -2,9 +2,9 @@ const {basename} = require('path')
 const {Tail} = require('tail')
 
 class Watcher {
-    constructor({path, logname, handler, level}, logr) {
+    constructor({path, logname, parser, level}, logr) {
         this.level = level
-        this.handler = handler
+        this.parser = parser
         this.path = path
         this.logname = logname || basename(path)
         this.logger = logr.newLogger(this.logname)
@@ -19,7 +19,7 @@ class Watcher {
 
     handleLine(line) {
         let base = this.logger.blank(this.level, line)
-        let diff = this.handler ? this.handler()({...base}) : {}
+        let diff = this.parser ? this.parser()({...base}) : {}
         if (!diff) {
             return
         }

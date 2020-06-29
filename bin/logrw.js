@@ -1,13 +1,15 @@
+#!/usr/bin/env node
+
 const fs = require('fs')
 const path = require('path')
 const program = require('commander')
 
-const {App} = require('./app')
+const {Logrw} = require('../app')
 
-let {version} = require('./package')
+let {version} = require('../package')
 
 program
-    .option('-c, --config <string>', 'config path', null, false)
+    .option('-c, --config <string>', 'set config path', null, false)
     .version(version, '-v, --version')
 
 program
@@ -24,7 +26,7 @@ program
             console.error('Config file already exists')
             return
         }
-        const templatepath = path.resolve(__dirname, './config.template.js')
+        const templatepath = path.resolve(__dirname, '../config.template.js')
         fs.copyFileSync(templatepath, configpath)
     })
 
@@ -33,7 +35,7 @@ program
         const configPath = path.resolve(process.cwd(), program.config || 'config.js')
         const config = require(configPath);
 
-        const app = new App(config)
+        const app = new Logrw(config)
 
         await app.loop()
     })
