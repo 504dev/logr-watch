@@ -1,6 +1,6 @@
 # logr-watch
 
-Watch log files and push it to logr
+Watch log files and push it to logr.
 
 ## Usage
 

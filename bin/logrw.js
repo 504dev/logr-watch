@@ -23,7 +23,7 @@ program
     .action(() => {
         const configpath = path.resolve(process.cwd(), 'config.js')
         if (fs.existsSync(configpath)) {
-            console.error('Config file already exists')
+            console.error('Config file already exists!')
             return
         }
         const templatepath = path.resolve(__dirname, '../config.template.js')
