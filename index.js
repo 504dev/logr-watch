@@ -38,8 +38,9 @@ class Logrw {
                 if (this.watchers[i][abspath]) {
                     continue
                 }
-                console.log(abspath)
-                this.watchers[i][abspath] = new Watcher({...file, path: abspath}, this.logr)
+                const logname = file.logname || path.basename(abspath)
+                console.log('%s => %s', abspath, logname)
+                this.watchers[i][abspath] = new Watcher({...file, path: abspath, logname}, this.logr)
             }
         }
     }

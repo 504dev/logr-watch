@@ -4,12 +4,11 @@ const fs = require('fs')
 const path = require('path')
 const program = require('commander')
 
-const {Logrw} = require('../app')
-
+const {Logrw} = require('../index')
 let {version} = require('../package')
 
 program
-    .option('-c, --config <string>', 'set config path', null, false)
+    .option('-c, --config <string>', 'set config path')
     .version(version, '-v, --version')
 
 program
@@ -23,7 +22,7 @@ program
     .action(() => {
         const configpath = path.resolve(process.cwd(), 'config.js')
         if (fs.existsSync(configpath)) {
-            console.error('Config file already exists!')
+            console.error('Config file «%s» already exists!', configpath)
             return
         }
         const templatepath = path.resolve(__dirname, '../config.template.js')
@@ -32,11 +31,13 @@ program
 
 program
     .action(async () => {
-        const configPath = path.resolve(process.cwd(), program.config || 'config.js')
-        const config = require(configPath);
-
+        const configpath = path.resolve(process.cwd(), program.config || 'config.js')
+        if (!fs.existsSync(configpath)) {
+            console.error('Config file «%s» not found.', configpath)
+            return
+        }
+        const config = require(configpath)
         const app = new Logrw(config)
-
         await app.loop()
     })
 

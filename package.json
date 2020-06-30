@@ -1,6 +1,6 @@
 {
   "name": "logr-watch",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "logr file watcher",
   "main": "index.js",
   "bin": {
@@ -26,10 +26,10 @@
   },
   "homepage": "https://github.com/504dev/logr-watch#readme",
   "dependencies": {
-    "commander": "^5.1.0",
-    "glob": "^7.1.6",
-    "logr-node-client": "git+https://github.com/504dev/logr-node-client.git",
-    "tail": "^2.0.4"
+    "commander": "5.1.0",
+    "glob": "7.1.6",
+    "logr-node-client": "1.0.1",
+    "tail": "2.0.4"
   },
   "devDependencies": {}
 }

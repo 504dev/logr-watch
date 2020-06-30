@@ -38,11 +38,14 @@ module.exports = {
       logname: "test.txt",
       parser() {
         return ({ message }) => {
-          const splitted = message.split(/\s+/);
+          const match = /(.+?)\s+(.+?)\s+(.+)/.exec(message);
+          if (match === null) {
+            return null;
+          }
           return {
-            timestamp: splitted[0],
-            level: splitted[1],
-            message: splitted[2],
+            timestamp: match[1],
+            level: match[2],
+            message: match[3],
           };
         };
       },

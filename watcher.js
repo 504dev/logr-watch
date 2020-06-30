@@ -1,4 +1,3 @@
-const {basename} = require('path')
 const {Tail} = require('tail')
 
 class Watcher {
@@ -6,7 +5,7 @@ class Watcher {
         this.level = level
         this.parser = parser
         this.path = path
-        this.logname = logname || basename(path)
+        this.logname = logname
         this.logger = logr.newLogger(this.logname)
         this.tail = new Tail(this.path)
         this.tail.on('line', this.handleLine.bind(this))
