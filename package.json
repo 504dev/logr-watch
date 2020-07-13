@@ -1,6 +1,6 @@
 {
   "name": "logr-watch",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "logr file watcher",
   "main": "index.js",
   "bin": {
@@ -28,7 +28,7 @@
   "dependencies": {
     "commander": "5.1.0",
     "glob": "7.1.6",
-    "logr-node-client": "1.0.1",
+    "logr-node-client": "1.0.3",
     "tail": "2.0.4"
   },
   "devDependencies": {}
