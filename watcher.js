@@ -17,7 +17,7 @@ class Watcher {
     }
 
     handleLine(line) {
-        let base = this.logger.blank(this.level, line)
+        let base = this.logger._blank(this.level, line)
         let diff = this.parser ? this.parser()({...base}) : {}
         if (!diff) {
             return
