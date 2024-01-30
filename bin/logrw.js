@@ -7,6 +7,8 @@ const program = require('commander')
 const {Logrw} = require('../index')
 let {version} = require('../package')
 
+const CONFIG_DEFAULT_NAME = 'logrw.config.js'
+
 program
     .option('-c, --config <string>', 'set config path')
     .version(version, '-v, --version')
@@ -20,7 +22,7 @@ program
     .command('init')
     .description('create config file')
     .action(() => {
-        const configpath = path.resolve(process.cwd(), 'config.js')
+        const configpath = path.resolve(process.cwd(), CONFIG_DEFAULT_NAME)
         if (fs.existsSync(configpath)) {
             console.error('Config file «%s» already exists!', configpath)
             return
@@ -31,7 +33,7 @@ program
 
 program
     .action(async () => {
-        const configpath = path.resolve(process.cwd(), program.config || 'config.js')
+        const configpath = path.resolve(process.cwd(), program.config || CONFIG_DEFAULT_NAME)
         if (!fs.existsSync(configpath)) {
             console.error('Config file «%s» not found.', configpath)
             return
