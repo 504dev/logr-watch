@@ -24,43 +24,42 @@ logrw
 
 ```javascript
 // logrw.config.js
+
 module.exports = {
   udp: ":7776",
   public_key: "MCAwDQYJKoZIhvcNAQEBBQADDwAwDAIFAMg7IrMCAwEAAQ==",
   private_key: "MC0CAQACBQDIOyKzAgMBAAECBQCHaZwRAgMA0nkCAwDziwIDAL+xAgJMKwICGq0=",
   files: [
-    // watch file
-    {
+    { // watch file
       path: "/var/log/system.log",
     },
-    // filter messages at error level and above
-    {
+    { // filter messages at error level and above
       path: "/var/log/nginx/nginx_error.log",
       level: "error",
     },
-    // watch multiple files, and log it under the name
-    {
+    { // watch multiple files, and log it under the name
       path: "./*.txt",
       logname: "test.txt",
     },
-    // using a custom parser
-    {
+    { // using a custom parser
       path: "./.pm2/logs/myapp*.log",
       logname: "myapp.pm2.log",
-      parser() {
-        return ({ message }) => {
-          const match = /(.+?)\s+(.+?)\s+(.+)/.exec(message);
-          if (match === null) {
-            return null;
-          }
-          return {
-            timestamp: match[1],
-            level: match[2],
-            message: match[3],
-          };
-        };
-      },
+      parser: myCustomPM2Parser,
     },
   ],
 };
+
+function myCustomPM2Parser() {
+  return ({ message }) => {
+    const match = /(.+?)\s+(.+?)\s+(.+)/.exec(message);
+    if (match === null) {
+      return null;
+    }
+    return {
+      timestamp: match[1],
+      level: match[2],
+      message: match[3],
+    };
+  };
+}
 ```
