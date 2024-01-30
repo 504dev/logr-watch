@@ -11,8 +11,8 @@ class Logrw {
         this.config = config
         this.logr = new Logr({
             udp: config.udp,
-            publicKey: config.public_key,
-            privateKey: config.private_key,
+            publicKey: config.public_key || config.publicKey,
+            privateKey: config.private_key || config.privateKey,
         })
         this.watchers = []
     }

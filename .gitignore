@@ -1,5 +1,5 @@
 *.txt
-config.js
+*config.js
 node_modules
 .idea
 package-lock.json
